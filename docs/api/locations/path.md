@@ -77,7 +77,7 @@ Check if a path is exactly equal to another.
 
 #### `Path.hasPrevious(path: Path) => boolean`
 
-Check if the path of previous sibling node exists
+Check if the path of previous sibling node exists.
 
 #### `Path.isAfter(path: Path, another: Path) => boolean`
 
