@@ -187,13 +187,14 @@ function configure(pkg, env, target) {
  */
 
 function factory(pkg, options = {}) {
-  const isProd = process.env.NODE_ENV === 'production'
-  return [
-    configure(pkg, 'development', 'cjs', options),
-    configure(pkg, 'development', 'module', options),
-    isProd && configure(pkg, 'development', 'umd', options),
-    isProd && configure(pkg, 'production', 'umd', options),
-  ].filter(Boolean)
+  const isProd = process.env.NODE_ENV === 'production';
+  const configs = [
+    ['development', 'cjs'],
+    ['development', 'module'],
+    ...(isProd ? [['development', 'umd'], ['production', 'umd']] : [])
+  ];
+
+  return configs.map(([env, format]) => configure(pkg, env, format, options));
 }
 
 /**
