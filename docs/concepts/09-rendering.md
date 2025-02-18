@@ -9,32 +9,29 @@ You can define these behaviors by passing "render props" to the top-level `<Edit
 For example if you wanted to render custom element components, you'd pass in the `renderElement` prop:
 
 ```jsx
-import { createEditor } from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
+import { createEditor } from 'slate';
+import { Slate, Editable, withReact } from 'slate-react';
+import { useState, useCallback } from 'react';
 
 const MyEditor = () => {
-  const [editor] = useState(() => withReact(createEditor()))
+  const [editor] = useState(() => withReact(createEditor()));
+
   const renderElement = useCallback(({ attributes, children, element }) => {
-    switch (element.type) {
-      case 'quote':
-        return <blockquote {...attributes}>{children}</blockquote>
-      case 'link':
-        return (
-          <a {...attributes} href={element.url}>
-            {children}
-          </a>
-        )
-      default:
-        return <p {...attributes}>{children}</p>
-    }
-  }, [])
+    const elements = {
+      quote: <blockquote {...attributes}>{children}</blockquote>,
+      link: <a {...attributes} href={element.url}>{children}</a>,
+      default: <p {...attributes}>{children}</p>,
+    };
+    return elements[element.type] || elements.default;
+  }, []);
 
   return (
-    <Slate editor={editor}>
+    <Slate editor={editor} initialValue={[]}>
       <Editable renderElement={renderElement} />
     </Slate>
-  )
-}
+  );
+};
+export default MyEditor;
 ```
 
 > 🤖 Be sure to mix in `props.attributes` and render `props.children` in your custom components! The attributes must be added to the top-level DOM element inside the component, as they are required for Slate's DOM helper functions to work. And the children are the "leaves" holding text content and inline elements.
