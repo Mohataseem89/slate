@@ -4,29 +4,29 @@ The `Editor` object stores all the state of a Slate editor. It can be extended b
 
 ```typescript
 interface Editor {
-  children: Node[]
-  selection: Range | null
-  operations: Operation[]
-  marks: Omit<Text, 'text'> | null
+  children: Node[];
+  selection: Range | null;
+  operations: Operation[];
+  marks: Omit<Text, 'text'> | null;
 
-  // Schema-specific node behaviors.
-  isInline: (element: Element) => boolean
-  isVoid: (element: Element) => boolean
-  markableVoid: (element: Element) => boolean
-  normalizeNode: (entry: NodeEntry) => void
-  onChange: (options?: { operation?: Operation }) => void
+  // Schema-specific node behaviors
+  isInline(element: Element): boolean;
+  isVoid(element: Element): boolean;
+  markableVoid(element: Element): boolean;
+  normalizeNode(entry: NodeEntry): void;
+  onChange(options?: { operation?: Operation }): void;
 
-  // Overrideable core actions.
-  addMark: (key: string, value: any) => void
-  apply: (operation: Operation) => void
-  deleteBackward: (unit: 'character' | 'word' | 'line' | 'block') => void
-  deleteForward: (unit: 'character' | 'word' | 'line' | 'block') => void
-  deleteFragment: () => void
-  insertBreak: () => void
-  insertFragment: (fragment: Node[]) => void
-  insertNode: (node: Node) => void
-  insertText: (text: string) => void
-  removeMark: (key: string) => void
+  // Overrideable core actions
+  addMark(key: string, value: any): void;
+  apply(operation: Operation): void;
+  deleteBackward(unit: 'character' | 'word' | 'line' | 'block'): void;
+  deleteForward(unit: 'character' | 'word' | 'line' | 'block'): void;
+  deleteFragment(): void;
+  insertBreak(): void;
+  insertFragment(fragment: Node[]): void;
+  insertNode(node: Node): void;
+  insertText(text: string): void;
+  removeMark(key: string): void;
 }
 ```
 
