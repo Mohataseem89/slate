@@ -121,21 +121,14 @@ For example, to find the lowest block that contains all of the current selection
 
 ```javascript
 function getCommonBlock(editor) {
-  const range = Editor.unhangRange(editor, editor.selection, { voids: true })
+  const range = Editor.unhangRange(editor, editor.selection, { voids: true });
+  const [common, path] = SlateNode.common(editor, range.anchor.path, range.focus.path);
 
-  let [common, path] = SlateNode.common(
-    editor,
-    range.anchor.path,
-    range.focus.path
-  )
-
-  if (Editor.isBlock(editor, common) || Editor.isEditor(common)) {
-    return [common, path]
-  } else {
-    return Editor.above(editor, {
-      at: path,
-      match: n => Editor.isBlock(editor, n) || Editor.isEditor(n),
-    })
-  }
+  return Editor.isBlock(editor, common) || Editor.isEditor(common)
+    ? [common, path]
+    : Editor.above(editor, {
+        at: path,
+        match: (n) => Editor.isBlock(editor, n) || Editor.isEditor(n),
+      });
 }
 ```
